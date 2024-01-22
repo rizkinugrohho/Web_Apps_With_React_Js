@@ -72,6 +72,15 @@ url.origin === 'https://fonts.gstatic.com', new NetworkFirst({
   ]
 }))
 
+registerRoute((url) => /\.(jpe?g|png)$/i.test(url.pathname), new StaleWhileRevalidate({
+  cacheName: "apiimage",
+  plugins: [
+    new ExpirationPlugin({
+      maxEntries: 30
+    })
+  ]
+}))
+
 self.addEventListener('install', function(event){
   console.log("SW install")
 
