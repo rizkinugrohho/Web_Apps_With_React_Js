@@ -1,6 +1,6 @@
-const carouseld = document.getElementById("carousel");
-const carouselItems = carouseld?.getElementsByClassName("flex")[0];
-const carouselContainer = carouseld?.getElementsByClassName("container")[0];
+const carouselId = document.getElementById("carousel");
+const carouselItems = carouselId?.getElementsByClassName("flex")[0];
+const carouselContainer = carouselId?.getElementsByClassName("container")[0];
 
 function carousel_calc_offset(e) {
   const carouselOffset = carouselContainer.getBoundingClientRect().left;
@@ -15,7 +15,7 @@ function slide(wrapper, items) {
     posInitial,
     posFinal,
     threshold = 100,
-    itemToShow = window.innerWidth < 767 ? 1 : 4,
+    itemToShow = window.innerWidth < 767 ? 1 : 2,
     slides = items.getElementsByClassName("card"),
     slidesLength = slides.length,
     slideSize = items.getElementsByClassName("card")[0].offsetWidth,
@@ -43,7 +43,7 @@ function slide(wrapper, items) {
     e.preventDefault();
     posInitial = items.offsetLeft;
 
-    if (e.type == "touchstart") {
+    if (e.type === "touchstart") {
       posX1 = e.touches[0].clientX;
     } else {
       posX1 = e.clientX;
@@ -55,7 +55,7 @@ function slide(wrapper, items) {
   function dragAction(e) {
     e = e || window.event;
 
-    if (e.type == "touchmove") {
+    if (e.type === "touchmove") {
       posX2 = posX1 - e.touches[0].clientX;
       posX1 = e.touches[0].clientX;
     } else {
@@ -88,49 +88,47 @@ function slide(wrapper, items) {
         posInitial = items.offsetLeft;
       }
 
-      if (dir == 1) {
+      if (dir === 1) {
         items.style.left = posInitial - slideSize + "px";
         index++;
-      } else if (dir == -1) {
+      } else if (dir === -1) {
         items.style.left = posInitial + slideSize + "px";
         index--;
       }
     }
-    // console.log(index);
+
 
     allowShift = false;
   }
 
-  function checkIndex(event) {
+  function checkIndex() {
     setTimeout(() => {
       items.classList.remove("transition-all");
       items.classList.remove("duration-200");
     }, 200);
-    // console.log("index:", index);
-    const isMobile = window.innerWidth < 767 ? 0 : -1;
-    if (event.propertyName === "left") {
-      if (index < 0) {
-        // console.log(1);
-        items.style.left = "0px";
-        index = 0;
-      } else if (index >= slidesLength - itemToShow) {
-        console.log(2);
-        items.style.left =
-          -((slidesLength - itemToShow + isMobile) * slideSize) + "px";
-        index = slidesLength - itemToShow;
-      } else if (index == slidesLength || index == slidesLength - 1) {
-        // console.log(3);
-        items.style.left = slidesLength - 1 * slideSize + "px";
-        index = slidesLength - 1;
-      }
 
-      allowShift = true;
+    const isMobile = window.innerWidth < 767 ? 0 : -1;
+    if (index < 0) {
+
+      items.style.left = "0px";
+      index = 0;
+    } else if (index >= slidesLength - itemToShow) {
+
+      items.style.left =
+        -((slidesLength - itemToShow + isMobile) * slideSize) + "px";
+      index = slidesLength - itemToShow;
+    } else if (index === slidesLength || index === slidesLength - 1) {
+
+      items.style.left = slidesLength - 1 * slideSize + "px";
+      index = slidesLength - 1;
     }
+
+    allowShift = true;
   }
 }
 
 if (document.getElementById("carousel")) {
-  slide(carouseld, carouselItems);
+  slide(carouselId, carouselItems);
   window.addEventListener("load", carousel_calc_offset);
   window.addEventListener("resize", carousel_calc_offset);
 }
