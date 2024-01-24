@@ -37,7 +37,7 @@ function App() {
       setItems(nodes);
 
       const script = document.createElement("script");
-      script.src = "carousel.js";
+      script.src = "./carousel.js";
       script.async = false;
       document.body.appendChild(script);
     })();

@@ -1,6 +1,35 @@
 /* eslint-disable no-useless-escape */
 import { Link } from "react-router-dom";
 
+function urlB64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding)
+    .replace(/\-/g, '+')
+    .replace(/_/g, '/');
+
+  const rawData = window.atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+}
+
+const subscribe = async() => {
+  const key = "BJpISNHqUdRPr5tivhrZzo_peGtXt0Q6e3YAuL6uBUrW7S_SvM5lSvWOYS6Vo6oL0GPBDJzMm4pYm10KDfP7eDg"
+  
+  try {
+    await global.registration.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlB64ToUint8Array(key)
+    })
+    console.log("Subscribe!");
+  } catch (error) {
+    console.log('Cannot Subscribe.');
+  }
+}
+
 const Profile = () =>{
   return (
     <>
@@ -148,18 +177,8 @@ const Profile = () =>{
             className="pb-3 mb-2 flex items-center justify-between w-full border-b border-gray-100"
           >
             <span>Subscribe to Notification</span>
-            <span>
-              <label
-                htmlFor="subscribe"
-                className="relative rounded-full bg-gray-200 w-12 h-7 block cursor-pointer"
-              >
-                <input
-                  id="subscribe"
-                  type="checkbox"
-                  className="appearance-none focus:outline-none absolute rounded-full w-5 h-5 bg-pink-400 transhtmlForm -translate-y-1/2 top-1/2 left-1 checked:left-6 block transition-all duration-300 cursor-pointer"
-                />
-              </label>
-            </span>
+            <button className="hover:underline appearance-none"
+            onClick={subscribe}>Subscribe</button>
           </li>
           <li
             className="pb-3 mb-2 flex items-center justify-between w-full border-b border-gray-100"
