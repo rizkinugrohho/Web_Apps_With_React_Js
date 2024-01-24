@@ -1,6 +1,6 @@
 import ArrivedItem from './ArrivedItem.js'
 
-function Arrived ({items}) {
+const Arrived = ({ items }) => {
     return (
         <section className="flex flex-col py-16">
       <div className="container mx-auto mb-4">
@@ -14,11 +14,7 @@ function Arrived ({items}) {
         <div className="container mx-auto"></div>
         <div className="flex -mx-4 flex-row relative">
 
-      {items && items.map(function(item){
-        return (
-          <ArrivedItem item={item} key={item.id} />
-        )
-      })}    
+        {items && items.map((item) => <ArrivedItem item={item} key={item.id} />)}    
         </div>
       </div>
     </section>
